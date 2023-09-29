@@ -32,6 +32,8 @@ public class NameAgeController : ControllerBase
         var estimate = await cache.GetOrCreateAsync("key-"+name, item =>
         {
             item.SlidingExpiration = TimeSpan.FromSeconds(10);
+            item.AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(15);
+            item.Size = 1;
             var estimate =  GetEstimate(name);
             return estimate;
         });
@@ -41,7 +43,7 @@ public class NameAgeController : ControllerBase
 
     private async Task<AgeEstimate?> GetEstimate(string name)
     {
-        Console.WriteLine("Calling API for name " + name);
+        Console.WriteLine("[" + DateTime.Now.ToString() + "]" +  "Calling API for name " + name);
         HttpResponseMessage response = await httpClient.GetAsync("?name="+name);
         response.EnsureSuccessStatusCode();
         var estimate = await response.Content.ReadFromJsonAsync<AgeEstimate?>();

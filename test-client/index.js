@@ -1,23 +1,26 @@
-const http = require('http');
+const http = require('http')
+const testApi = 'http://localhost:5083'
 
 const requestName = (name) => {
   return new Promise((resolve, reject) => {
-    http.get('http://localhost:5083/?name='+name, res => {
-      console.log('Status Code:', res.statusCode);
+    http.get(`${testApi}/?name=${name}`, res => {
+      if(res.statusCode != 200) {
+        console.log('Status Code:', res.statusCode)
+        reject(Error('Request status code:' + res.statusCode))
+      }
   
-      let data = [];
+      let data = []
       res.on('data', chunk => {
-        data.push(chunk);
+        data.push(chunk)
       });
   
       res.on('end', () => {
-        console.log('Response ended: ');
-        const parsedData = JSON.parse(Buffer.concat(data).toString());
-        resolve(parsedData);
+        const parsedData = JSON.parse(Buffer.concat(data).toString())
+        resolve(parsedData)
       });
     }).on('error', err => {
-      console.log('Error: ', err.message);
-      reject(err);
+      console.log('Error: ', err.message)
+      reject(err)
     });
   });
 }
@@ -30,15 +33,14 @@ const testNames = [
   'david',
 ]
 
-const repeatCalls = 10
+const repeatCalls = 30
 
 const awaitMilliseconds = (ms) => new Promise((resolve) => setTimeout(resolve, ms))
 
 const runMultipleRequests = async () => {
   
-  for (const testName of testNames) {
-    console.log('testName', testName)
-    for (i = 0; i < repeatCalls; i++) {
+  for (i = 0; i < repeatCalls; i++) {
+    for (const testName of testNames) {
       const res = await requestName(testName)
       console.log('res', res)
       await awaitMilliseconds(200)
