@@ -31,9 +31,12 @@ const testNames = [
   'jose',
   'daniel',
   'david',
+  'matias',
+  'judas',
+  'tadeu',
 ]
 
-const repeatCalls = 30
+const repeatCalls = 300
 
 const awaitMilliseconds = (ms) => new Promise((resolve) => setTimeout(resolve, ms))
 
@@ -42,8 +45,8 @@ const runMultipleRequests = async () => {
   for (i = 0; i < repeatCalls; i++) {
     for (const testName of testNames) {
       const res = await requestName(testName)
-      console.log('res', res)
-      await awaitMilliseconds(200)
+      console.log('res', res?.name)
+      await awaitMilliseconds(150)
     }
   }
 }

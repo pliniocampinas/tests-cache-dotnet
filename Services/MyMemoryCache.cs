@@ -6,7 +6,7 @@ public class MyMemoryCache
   {
     Cache = new MemoryCache(new MemoryCacheOptions
     {
-      SizeLimit = 4
+      SizeLimit = 1_000
     });
   }
 }

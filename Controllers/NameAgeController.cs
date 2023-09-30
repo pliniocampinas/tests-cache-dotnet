@@ -29,24 +29,39 @@ public class NameAgeController : ControllerBase
     [HttpGet]
     public async Task<AgeEstimate?> Get([FromServices]MyMemoryCache myCache, string name)
     {
-        var estimate = await myCache.Cache.GetOrCreateAsync("key-"+name, item =>
+        // Create multiple records for each name.
+        var currentSecond = DateTime.Now.Second;
+        var key = "key-" + name + currentSecond.ToString();
+
+        // Test 1: Compact cache every 10 seconds or so.
+        // if(currentSecond % 10 == 0)
+        // {
+        //     Console.WriteLine("Compacting");
+        //     myCache.Cache.Compact(0.5);
+        // }
+
+        var estimateWithBomb = await myCache.Cache.GetOrCreateAsync(key, item =>
         {
-            item.SlidingExpiration = TimeSpan.FromSeconds(10);
-            item.AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(20);
-            item.Size = 1;
+            item.SlidingExpiration = TimeSpan.FromSeconds(30);
+            item.AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(60);
+            // Test 2: Set bigger size to limit cache entires.
+            item.Size = 100;
             var estimate =  GetEstimate(name);
             return estimate;
         });
         
-        return estimate;
+        return estimateWithBomb?.Estimate;
     }
 
-    private async Task<AgeEstimate?> GetEstimate(string name)
+    private async Task<AgeEstimateWithMemoryBomb?> GetEstimate(string name)
     {
         Console.WriteLine("[" + DateTime.Now.ToString() + "]" +  "Calling API for name " + name);
-        HttpResponseMessage response = await httpClient.GetAsync("?name="+name);
-        response.EnsureSuccessStatusCode();
-        var estimate = await response.Content.ReadFromJsonAsync<AgeEstimate?>();
-        return estimate;
+        await Task.Delay(40);
+        // HttpResponseMessage response = await httpClient.GetAsync("?name="+name);
+        // response.EnsureSuccessStatusCode();
+        var estimate = new AgeEstimate(); // await response.Content.ReadFromJsonAsync<AgeEstimate?>();
+        // Create a memory bomb with strings and nested objects.
+        var memoryBomb = new AgeEstimateWithMemoryBomb(estimate, 1024 * 1024, 20);
+        return memoryBomb;
     }
 }
