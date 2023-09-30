@@ -27,12 +27,12 @@ public class NameAgeController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<AgeEstimate?> Get([FromServices]IMemoryCache cache, string name)
+    public async Task<AgeEstimate?> Get([FromServices]MyMemoryCache myCache, string name)
     {
-        var estimate = await cache.GetOrCreateAsync("key-"+name, item =>
+        var estimate = await myCache.Cache.GetOrCreateAsync("key-"+name, item =>
         {
             item.SlidingExpiration = TimeSpan.FromSeconds(10);
-            item.AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(15);
+            item.AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(20);
             item.Size = 1;
             var estimate =  GetEstimate(name);
             return estimate;
