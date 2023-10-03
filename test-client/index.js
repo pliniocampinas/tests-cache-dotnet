@@ -1,9 +1,10 @@
 const http = require('http')
 const testApi = 'http://localhost:5083'
+const awaitMilliseconds = (ms) => new Promise((resolve) => setTimeout(resolve, ms))
 
-const requestName = (name) => {
+const requestName = (name, key) => {
   return new Promise((resolve, reject) => {
-    http.get(`${testApi}/?name=${name}`, res => {
+    http.get(`${testApi}/?name=${name}&cacheKey=${key}`, res => {
       if(res.statusCode != 200) {
         console.log('Status Code:', res.statusCode)
         reject(Error('Request status code:' + res.statusCode))
@@ -38,15 +39,13 @@ const testNames = [
 
 const repeatCalls = 300
 
-const awaitMilliseconds = (ms) => new Promise((resolve) => setTimeout(resolve, ms))
-
 const runMultipleRequests = async () => {
   
   for (i = 0; i < repeatCalls; i++) {
     for (const testName of testNames) {
-      const res = await requestName(testName)
+      const res = await requestName(testName, '' + i)
       console.log('res', res?.name)
-      await awaitMilliseconds(150)
+      await awaitMilliseconds(i > 20? 4500: 150)
     }
   }
 }
