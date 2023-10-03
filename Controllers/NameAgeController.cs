@@ -29,20 +29,11 @@ public class NameAgeController : ControllerBase
     [HttpGet]
     public async Task<AgeEstimate?> Get([FromServices]MyMemoryCache myCache, string name, string cacheKey)
     {
-        // Test 1: Compact cache every 10 seconds or so.
-        // var currentSecond = DateTime.Now.Second;
-        // if(currentSecond % 10 == 0)
-        // {
-        //     Console.WriteLine("Compacting");
-        //     myCache.Cache.Compact(0.5);
-        // }
-
         var key = "key-" + name + "-" + cacheKey;
         var estimateWithBomb = await myCache.Cache.GetOrCreateAsync(key, item =>
         {
             item.SlidingExpiration = TimeSpan.FromSeconds(15);
             item.AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(30);
-            // Test 2: Set bigger size to limit cache entires.
             item.Size = 1;
             var estimate =  GetEstimate(name);
             return estimate;
