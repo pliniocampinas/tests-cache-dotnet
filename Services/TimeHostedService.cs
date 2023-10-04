@@ -29,6 +29,7 @@ public class TimedHostedService : IHostedService, IDisposable
     {
       _memoryCache.Cache.Compact(0.5);
       _logger.LogInformation("Compacted cache.");
+      _logger.LogInformation("Entries cached: {count}", _memoryCache.Cache.Count);
     }
 
     _logger.LogInformation("Timed Hosted Service is working. Count: {Count}", count);
