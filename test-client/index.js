@@ -28,25 +28,25 @@ const requestName = (name, key) => {
 
 const testNames = [
   'plinio',
-  'maria',
-  'jose',
-  'daniel',
-  'david',
-  'matias',
-  'judas',
-  'tadeu',
+  // 'maria',
+  // 'jose',
+  // 'daniel',
+  // 'david',
+  // 'matias',
+  // 'judas',
+  // 'tadeu',
 ]
 
-const repeatCalls = 300
+const repeatCalls = 3000
 
 const runMultipleRequests = async () => {
   
   for (i = 0; i < repeatCalls; i++) {
     for (const testName of testNames) {
-      const res = await requestName(testName, '' + i)
-      console.log('res', res?.name)
-      await awaitMilliseconds(i > 20? 4500: 150)
+      console.log('testName', testName)
+      requestName(testName, 'a')
     }
+    await awaitMilliseconds(10)
   }
 }
 

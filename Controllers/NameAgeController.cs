@@ -32,8 +32,8 @@ public class NameAgeController : ControllerBase
         var key = "key-" + name + "-" + cacheKey;
         var estimateWithBomb = await myCache.Cache.GetOrCreateAsync(key, item =>
         {
-            item.SlidingExpiration = TimeSpan.FromSeconds(15);
-            item.AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(30);
+            item.SlidingExpiration = TimeSpan.FromSeconds(10);
+            item.AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(10);
             item.Size = 1;
             var estimate =  GetEstimate(name);
             return estimate;
