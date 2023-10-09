@@ -4,6 +4,7 @@ var builder = WebApplication.CreateBuilder(args);
 // builder.Services.AddMemoryCache();
 builder.Services.AddSingleton<MyMemoryCache>();
 builder.Services.AddHostedService<TimedHostedService>();
+builder.Services.AddSingleton<GetAgeEstimateService>();
 builder.Services.AddControllers();
 
 var app = builder.Build();
