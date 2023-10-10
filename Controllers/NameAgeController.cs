@@ -15,8 +15,14 @@ public class NameAgeController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<AgeEstimate?> Get([FromServices]GetAgeEstimateService getAgeEstimateService, string name, string cacheKey)
+    public async Task<AgeEstimate?> Get([FromServices]GetCacheWithLock<AgeEstimateWithMemoryBomb, GetAgeEstimateParameters> getAgeEstimateService, string name, string cacheKey)
     {     
-        return await getAgeEstimateService.GetAgeByName(name, cacheKey);
+        var estimateWithMemoryBomb = await getAgeEstimateService.GetCached(new GetAgeEstimateParameters()
+        {
+            Name = name, 
+            Key = cacheKey
+        });
+
+        return estimateWithMemoryBomb.Estimate;
     }
 }
