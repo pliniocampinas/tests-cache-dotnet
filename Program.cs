@@ -1,4 +1,4 @@
-using tests_cache_dotnet;
+using tests_cache_dotnet.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -7,18 +7,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddSingleton<MyMemoryCache>();
 builder.Services.AddHostedService<TimedHostedService>();
 builder.Services.AddSingleton<GetAgeEstimateService>();
-builder.Services.AddSingleton((provider) =>
-{
-  var memoryCache = provider.GetService<MyMemoryCache>();
-  var getAgeEstimateService = provider.GetService<GetAgeEstimateService>();
-
-  if(memoryCache == null || getAgeEstimateService == null)
-  {
-    throw new Exception("Resolved Faild");
-  }
-
-  return new GetCacheWithLock<AgeEstimateWithMemoryBomb, GetAgeEstimateParameters>(memoryCache, getAgeEstimateService);
-});
+builder.Services.AddCachedService<GetAgeEstimateService, AgeEstimateWithMemoryBomb, GetAgeEstimateParameters>();
 builder.Services.AddControllers();
 
 var app = builder.Build();

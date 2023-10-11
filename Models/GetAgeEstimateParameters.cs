@@ -1,4 +1,4 @@
-namespace tests_cache_dotnet;
+namespace tests_cache_dotnet.Models;
 
 public class GetAgeEstimateParameters
 {

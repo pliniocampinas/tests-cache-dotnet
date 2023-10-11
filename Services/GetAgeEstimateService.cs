@@ -1,5 +1,5 @@
 using Microsoft.Extensions.Caching.Memory;
-using tests_cache_dotnet;
+using tests_cache_dotnet.Models;
 public class GetAgeEstimateService: ICachableService<AgeEstimateWithMemoryBomb, GetAgeEstimateParameters>
 {
   private static HttpClient _httpClient = new()

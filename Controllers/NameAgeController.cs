@@ -1,5 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Caching.Memory;
+using tests_cache_dotnet.Models;
 
 namespace tests_cache_dotnet.Controllers;
 

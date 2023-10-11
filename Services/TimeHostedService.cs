@@ -1,6 +1,5 @@
 public class TimedHostedService : IHostedService, IDisposable
 {
-  private int executionCount = 0;
   private readonly ILogger<TimedHostedService> _logger;
   private Timer? _timer = null;
   private MyMemoryCache? _memoryCache = null;
@@ -23,16 +22,10 @@ public class TimedHostedService : IHostedService, IDisposable
 
   private void DoWork(object? state)
   {
-    var count = Interlocked.Increment(ref executionCount);
-
     if(_memoryCache is not null)
     {
       _memoryCache.Cache.Compact(0.5);
-      // _logger.LogInformation("Compacted cache.");
-      // _logger.LogInformation("Entries cached: {count}", _memoryCache.Cache.Count);
     }
-
-    // _logger.LogInformation("Timed Hosted Service is working. Count: {Count}", count);
   }
 
   public Task StopAsync(CancellationToken stoppingToken)
