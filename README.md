@@ -1,5 +1,5 @@
 # tests-cache-dotnet
-Testing momery cache for web apps
+Testing memory cache for web apps
 
 ### The examples handles the following scenarios:
 
