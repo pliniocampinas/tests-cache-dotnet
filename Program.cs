@@ -1,4 +1,6 @@
 using tests_cache_dotnet.Models;
+using tests_cache_dotnet.Services;
+using tests_cache_dotnet.Services.Cache;
 
 var builder = WebApplication.CreateBuilder(args);
 

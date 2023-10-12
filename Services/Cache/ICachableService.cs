@@ -1,9 +1,11 @@
 
 using Microsoft.Extensions.Caching.Memory;
 
-public interface ICachableService<T,P>
+namespace tests_cache_dotnet.Services.Cache;
+
+public interface ICachableService<TEntry,TParameters>
 {
-  Task<T> GetFromSource(P parameters);
-  string GetKey(P parameters);
+  Task<TEntry> GetFromSource(TParameters parameters);
+  string GetKey(TParameters parameters);
   MemoryCacheEntryOptions GetEntryOptions();
 }

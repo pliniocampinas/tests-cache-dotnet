@@ -1,3 +1,7 @@
+using tests_cache_dotnet.Services.Cache;
+
+namespace tests_cache_dotnet.Services;
+
 public class TimedHostedService : IHostedService, IDisposable
 {
   private readonly ILogger<TimedHostedService> _logger;

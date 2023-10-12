@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using tests_cache_dotnet.Models;
+using tests_cache_dotnet.Services.Cache;
 
 namespace tests_cache_dotnet.Controllers;
 
