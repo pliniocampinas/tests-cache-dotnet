@@ -9,6 +9,6 @@ Testing memory cache for web apps
 
 ### The examples handles the following scenarios:
 
-- Cache stampede.
-- Cleaning cache with a time hosted service.
+- Prevent Cache stampede with a Semaphore.
+- Cleaning cache with a time hosted service. Dotnet garbage collector does not clean expired cache if it is not read again.
 - Limits growth with a max number of entries.
